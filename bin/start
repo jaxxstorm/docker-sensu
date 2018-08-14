@@ -27,7 +27,7 @@ case "$SENSU_SERVICE" in
   client)
     DEPENDENCIES="client transport"
     DIRS="$CONFIG_DIR"
-    rm -rf ${CHECK_DIR}/*
+    rm -rf ${CHECK_DIR}/* || true
 
     if [[ "${TRANSPORT_NAME}" == "redis" ]]; then
       DEPENDENCIES="redis $DEPENDENCIES"
@@ -46,7 +46,11 @@ case "$SENSU_SERVICE" in
 
     for INDEX in $DEPENDENCIES
     do
-      envtpl -in /etc/sensu/templates/${INDEX}.json.tmpl > $CONFIG_DIR/${INDEX}.json
+      if [ -z "${NO_CONFIGURE_DEFAULTS}" ]; then
+        envtpl -in /etc/sensu/templates/${INDEX}.json.tmpl > $CONFIG_DIR/${INDEX}.json || true
+      else
+        echo 'Not configuring defaults'
+      fi
     done
 
     # Generate key/cert files if RABBITMQ_SSL_SUPPORT = true
@@ -73,7 +77,7 @@ case "$SENSU_SERVICE" in
       jsonFile=$(echo ${yamlFile} | sed -r -e 's/\.ya?ml/.json/');
       echo "Converted ${yamlFile} to ${jsonFile}"
       yaml2json ${yamlFile} > ${jsonFile}
-      rm ${yamlFile} > /dev/null
+      rm ${yamlFile} > /dev/null || true
     done
 
     if [[ "${VALIDATE_ONLY}" == "true" ]]; then

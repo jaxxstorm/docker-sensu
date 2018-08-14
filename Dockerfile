@@ -34,12 +34,14 @@ RUN \
     curl -Ls https://github.com/arschles/envtpl/releases/download/${ENVTPL_VERSION}/envtpl_linux_amd64 > /usr/local/bin/envtpl &&\
     chmod +x /usr/local/bin/envtpl &&\
     gem install --no-document yaml2json &&\
+    gem install --no-document multi_json && \
     mkdir -p /etc/sensu/conf.d /etc/sensu/check.d /etc/sensu/extensions /etc/sensu/plugins /etc/sensu/handlers &&\
     # Undo world writable bundle directory, see https://github.com/docker-library/ruby/issues/74
     chmod -R o-w /usr/local/bundle
 
 COPY templates /etc/sensu/templates
 COPY bin /bin/
+COPY extensions /etc/sensu/extensions
 
 ENV DEFAULT_PLUGINS_REPO=sensu-plugins \
     DEFAULT_PLUGINS_VERSION=master \
