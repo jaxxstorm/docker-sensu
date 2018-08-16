@@ -8,6 +8,7 @@ ARG ENVTPL_VERSION=0.2.3
 RUN \
     apt-get update &&\
     apt-get install -y --no-install-recommends curl ca-certificates apt-transport-https gnupg locales &&\
+    apt-get install -y build-essential ruby-dev &&\
     # Setup default locale & cleanup unneeded
     echo "LC_ALL=en_US.UTF-8" >> /etc/environment &&\
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen &&\
@@ -35,6 +36,7 @@ RUN \
     chmod +x /usr/local/bin/envtpl &&\
     gem install --no-document yaml2json &&\
     gem install --no-document multi_json && \
+    gem install --no-document bundler && \
     mkdir -p /etc/sensu/conf.d /etc/sensu/check.d /etc/sensu/extensions /etc/sensu/plugins /etc/sensu/handlers &&\
     # Undo world writable bundle directory, see https://github.com/docker-library/ruby/issues/74
     chmod -R o-w /usr/local/bundle
@@ -43,7 +45,15 @@ COPY templates /etc/sensu/templates
 COPY bin /bin/
 COPY extensions /etc/sensu/extensions
 COPY handlers /etc/sensu/handlers
-COPY checks /etc/sensu/checks
+COPY plugins /etc/sensu/plugins
+COPY checks /etc/sensu/check.d
+COPY Gemfile /etc/sensu/Gemfile
+
+# Install and bundle gems
+RUN  bundle install --gemfile /etc/sensu/Gemfile
+
+RUN ls /etc/sensu/check.d
+     
 
 ENV DEFAULT_PLUGINS_REPO=sensu-plugins \
     DEFAULT_PLUGINS_VERSION=master \
