@@ -42,6 +42,8 @@ RUN \
 COPY templates /etc/sensu/templates
 COPY bin /bin/
 COPY extensions /etc/sensu/extensions
+COPY handlers /etc/sensu/handlers
+COPY checks /etc/sensu/checks
 
 ENV DEFAULT_PLUGINS_REPO=sensu-plugins \
     DEFAULT_PLUGINS_VERSION=master \
