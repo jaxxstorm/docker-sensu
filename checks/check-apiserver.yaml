@@ -1,8 +1,0 @@
-checks:
-  check-apiserver:
-    command: check-kube-apiserver-available.rb --in-cluster
-    handlers: []
-    interval: 10
-    occurrences: 2
-    source: gke-apiserver
-    standalone: true

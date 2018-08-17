@@ -1,0 +1,43 @@
+checks:
+  check-apiserver:
+    command: check-kube-apiserver-available.rb --in-cluster
+    handlers: []
+    interval: 10
+    occurrences: 2
+    source: gke-apiserver
+    standalone: true
+  check-pods-restarting:
+    command: check-kube-pods-restarting.rb --in-cluster
+    handlers: []
+    interval: 10
+    occurrences: 2
+    source: gke-apiserver
+    standalone: true
+  check-pods-ready:
+    command: check-kube-pods-ready.rb --in-cluster
+    handlers: []
+    interval: 10
+    occurrences: 2
+    source: gke-apiserver
+    standalone: true
+  check-pods-runtime:
+    command: check-kube-pods-runtime.rb --in-cluster
+    handlers: []
+    interval: 10
+    occurrences: 2
+    source: gke-apiserver
+    standalone: true
+  check-nodes-ready:
+    command: check-kube-nodes-ready.rb --in-cluster
+    handlers: []
+    interval: 10
+    occurrences: 2
+    source: gke-apiserver
+    standalone: true
+  check-kubernetes-service:
+    command: check-kube-service-available.rb --in-cluster -l kubernetes
+    handlers: []
+    interval: 10
+    occurrences: 2
+    source: gke-apiserver
+    standalone: true
