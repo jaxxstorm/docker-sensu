@@ -14,7 +14,7 @@ checks:
     source: gke-apiserver
     standalone: true
   check-pods-ready:
-    command: check-kube-pods-ready.rb --in-cluster
+    command: check-kube-pods-pending.rb --in-cluster
     handlers: []
     interval: 10
     occurrences: 2
